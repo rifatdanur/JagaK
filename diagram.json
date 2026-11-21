@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "author": "CacaoGuard AI - IDTC 2.0",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-s3-devkitc-1", "id": "esp", "top": 60, "left": 200, "attrs": {} },
+    { "type": "wokwi-pir-motion-sensor", "id": "pir1", "top": -92, "left": -84.18, "attrs": {} },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_ble",
+      "top": 54.2,
+      "left": -76.8,
+      "attrs": { "color": "green", "label": "BLE Owner" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_audio",
+      "top": 140.6,
+      "left": -76.8,
+      "attrs": { "color": "blue", "label": "Audio AI" }
+    },
+    { "type": "wokwi-dht22", "id": "dht1", "top": 205, "left": -75, "attrs": {} },
+    { "type": "wokwi-potentiometer", "id": "pot1", "top": 373.1, "left": -77, "attrs": {} },
+    {
+      "type": "board-ssd1306",
+      "id": "oled1",
+      "top": -83.26,
+      "left": 451.43,
+      "attrs": { "i2cAddress": "0x3c" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 147.95,
+      "left": 432,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_red",
+      "top": 63.6,
+      "left": 531.8,
+      "attrs": { "color": "red", "label": "Sorot Pencuri" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 167.15,
+      "left": 432,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_yellow",
+      "top": 178.8,
+      "left": 531.8,
+      "attrs": { "color": "yellow", "label": "Zona Merah" }
+    },
+    { "type": "wokwi-buzzer", "id": "bz1", "top": 260, "left": 470, "attrs": { "volume": "0.5" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "pir1:VCC", "esp:3V3.1", "red", [ "v15", "h201.6", "v73.98" ] ],
+    [ "pir1:OUT", "esp:4", "orange", [ "v35", "h211.06", "v82.78" ] ],
+    [ "pir1:GND", "esp:GND.1", "black", [ "v25", "h124.54", "v265.58" ] ],
+    [ "btn_ble:1.r", "esp:5", "green", [ "h115.4", "v60.18" ] ],
+    [ "btn_ble:2.r", "esp:GND.1", "black", [ "h105.8", "v204.38" ] ],
+    [ "btn_audio:1.r", "esp:6", "blue", [ "v-19.2", "h214.88" ] ],
+    [ "btn_audio:2.r", "esp:GND.1", "black", [ "h105.8", "v117.98" ] ],
+    [ "dht1:VCC", "esp:3V3.1", "red", [ "v25.7", "h213.6", "v-256.62" ] ],
+    [ "dht1:SDA", "esp:7", "cyan", [ "v44.9", "h165.7", "v-218.22" ] ],
+    [ "dht1:GND", "esp:GND.1", "black", [ "v15", "h45" ] ],
+    [ "pot1:VCC", "esp:3V3.1", "red", [ "v20", "h181.6", "v-372.62" ] ],
+    [ "pot1:SIG", "esp:10", "purple", [ "v10", "h210.8", "v-218.62" ] ],
+    [ "pot1:GND", "esp:GND.1", "black", [ "v30", "h211.2", "v-181.02" ] ],
+    [ "oled1:VCC", "esp:3V3.1", "red", [ "v-25", "h-345.45", "v190.78" ] ],
+    [ "oled1:GND", "esp:GND.2", "black", [ "v-15", "h-135" ] ],
+    [ "oled1:SDA", "esp:42", "gold", [ "v-48", "h-201.53", "v261.78" ] ],
+    [ "oled1:SCL", "esp:41", "white", [ "v-38.4", "h-162.9", "v173.4", "v88.38" ] ],
+    [ "esp:40", "r1:1", "red", [ "h70" ] ],
+    [ "r1:2", "led_red:A", "red", [ "h94.8", "v-48" ] ],
+    [ "led_red:C", "esp:GND.3", "black", [ "h-28.4", "v134.4", "h-153.6", "v40.98" ] ],
+    [ "esp:39", "r2:1", "yellow", [ "h55" ] ],
+    [ "r2:2", "led_yellow:A", "yellow", [ "v86.4", "h94.8", "v-38.4" ] ],
+    [ "led_yellow:C", "esp:GND.3", "black", [ "h-28.4", "v19.2", "h-153.6", "v40.98" ] ],
+    [ "esp:38", "bz1:2", "green", [ "h40", "v199.02", "h175.57" ] ],
+    [ "bz1:1", "esp:GND.4", "black", [ "v20", "h-132.2", "v-73.42" ] ]
+  ],
+  "dependencies": {}
+}
