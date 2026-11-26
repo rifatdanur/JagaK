@@ -1,4 +1,4 @@
-# CacaoGuard AI — Sistem Keamanan & Deteksi Kematangan Kakao Berbasis Edge AIoT
+# JagaK — Sistem Keamanan & Deteksi Kematangan Kakao Berbasis Edge AIoT
 
 **IDTC 2.0 — AIoT Future Competition**  
 **Studi Kasus:** Perkebunan Kakao Kabupaten Lampung Timur
@@ -6,7 +6,7 @@
 ---
 
 ## Ringkasan Inovasi
-**CacaoGuard AI** mengatasi masalah pencurian buah kakao matang dan fenomena *panen dini* di Lampung Timur melalui kombinasi **ESP32-S3 + Sensor Fusion (PIR, Audio AI TinyML, Kamera IR) + LoRa Mesh + Computer Vision AI (YOLOv8n & Segmentasi Kematangan) + Dynamic Risk Scoring + Notifikasi Telegram Poktan**.
+**JagaK** mengatasi masalah pencurian buah kakao matang dan fenomena *panen dini* di Lampung Timur melalui kombinasi **ESP32-S3 + Sensor Fusion (PIR, Audio AI TinyML, Kamera IR) + LoRa Mesh + Computer Vision AI (YOLOv8n & Segmentasi Kematangan) + Dynamic Risk Scoring + Notifikasi Telegram Poktan**.
 
 ## Link Simulasi Hardware (Wokwi ESP32-S3)
 - **Wokwi Live Project:** https://wokwi.com/projects/481229105019680769
