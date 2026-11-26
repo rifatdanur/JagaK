@@ -10,7 +10,7 @@
 
 ## Link Simulasi Hardware (Wokwi ESP32-S3)
 - **Wokwi Live Project:** https://wokwi.com/projects/481229105019680769
-- web dashboard https://cacaoguard-ai.streamlit.app/
+- web dashboard https://jagak-kakao.streamlit.app/
 
 ## Fitur Utama Prototipe
 1. **Simulasi Hardware ESP32-S3 (`wokwi/`):**
