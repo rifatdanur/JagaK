@@ -35,9 +35,9 @@ const int   MQTT_PORT     = 1883;
 const long  GMT_OFFSET_SEC      = 7 * 3600;
 const int   DAYLIGHT_OFFSET_SEC = 0;
 
-const char* TOPIC_TELEMETRY = "cacaoguard/lamtim/blok_b/telemetry";
-const char* TOPIC_EVENT     = "cacaoguard/lamtim/blok_b/event";
-const char* TOPIC_CMD       = "cacaoguard/lamtim/blok_b/cmd";
+const char* TOPIC_TELEMETRY = "jagak/lamtim/telemetry";
+const char* TOPIC_EVENT     = "jagak/lamtim/event";
+const char* TOPIC_CMD       = "jagak/lamtim/cmd";
 
 // ==========================================
 // 3. OBJEK & VARIABEL STATUS (TANPA NILAI DUMMY DHT)
@@ -223,7 +223,7 @@ String modeToString(AlarmMode m) {
 
 void publishEvent(const char* triggerSource, const char* actionResult) {
   JsonDocument doc;
-  doc["node_id"] = "BLOK_B_LAMTIM";
+  doc["node_id"] = "JAGAK_LAMTIM";
   doc["time_wib"] = getTimeWIB();
   doc["trigger"] = triggerSource;
   doc["ble_owner"] = bleOwnerPresent;
@@ -244,7 +244,7 @@ void publishEvent(const char* triggerSource, const char* actionResult) {
 
 void publishTelemetry() {
   JsonDocument doc;
-  doc["node_id"] = "BLOK_B_LAMTIM";
+  doc["node_id"] = "JAGAK_LAMTIM";
   doc["time_wib"] = getTimeWIB();
   doc["ripeness_pct"] = ripenessPct;
   doc["risk_score"] = round(riskScore);
@@ -358,7 +358,7 @@ void updateOLED() {
   display.setTextColor(SSD1306_WHITE);
 
   display.setCursor(0, 0);
-  display.printf("CacaoGuard  %s", getTimeWIB().c_str());
+  display.printf("Jagak       %s", getTimeWIB().c_str());
   display.drawLine(0, 10, 127, 10, SSD1306_WHITE);
 
   display.setCursor(0, 14);
@@ -396,7 +396,7 @@ void maintainMQTT() {
   }
   if (millis() - lastMqttRetryMs >= 5000) {
     lastMqttRetryMs = millis();
-    String clientId = "CacaoGuard-S3-" + String(random(1000, 9999));
+    String clientId = "Jagak-S3-" + String(random(1000, 9999));
     Serial.print("Menghubungkan ke MQTT Broker... ");
     if (mqtt.connect(clientId.c_str())) {
       Serial.println("TERHUBUNG!");
@@ -426,7 +426,7 @@ void setup() {
     display.setTextSize(1);
     display.setTextColor(SSD1306_WHITE);
     display.setCursor(10, 25);
-    display.println("CacaoGuard Boot...");
+    display.println("Jagak AIoT Boot...");
     display.display();
   }
 

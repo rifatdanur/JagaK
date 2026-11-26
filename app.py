@@ -1,5 +1,5 @@
 # =====================================================================
-# CacaoGuard AI - Dashboard AIoT Real-Time Keamanan & Kematangan Kakao
+# Jagak (Jaga Kakao) - Dashboard Edge AIoT Keamanan & Kematangan Kakao
 # Auto-Refresh Real-Time (tiap 2 detik) tanpa mengganggu Webcam!
 # =====================================================================
 
@@ -21,9 +21,9 @@ from ultralytics import YOLO
 # ---------------------------------------------------------------------
 MQTT_BROKER     = "broker.hivemq.com"
 MQTT_PORT       = 1883
-TOPIC_TELEMETRY = "cacaoguard/lamtim/blok_b/telemetry"
-TOPIC_EVENT     = "cacaoguard/lamtim/blok_b/event"
-TOPIC_CMD       = "cacaoguard/lamtim/blok_b/cmd"
+TOPIC_TELEMETRY = "jagak/lamtim/telemetry"
+TOPIC_EVENT     = "jagak/lamtim/event"
+TOPIC_CMD       = "jagak/lamtim/cmd"
 LINK_WOKWI      = "https://wokwi.com/projects/481229105019680769"
 
 TIMEOUT_WOKWI_DETIK = 8  # > 8 detik tanpa paket dari Wokwi -> dianggap Offline
@@ -177,7 +177,7 @@ def deteksi_keamanan(gambar_bgr, model, ble_owner, mqtt_client, state, token, ch
 
     elif ada_manusia and not ble_owner:
         kirim_perintah_wokwi(mqtt_client, state, "THIEF")
-        pesan = f"🚨 PERINGATAN PENCURI!\n🕒 Waktu: {waktu_sekarang}\n📍 Blok B (Zona {zona_teks})\n⚡ Sirine & Lampu Sorot AKTIF!"
+        pesan = f"🚨 PERINGATAN PENCURI — Jagak (Jaga Kakao)!\n🕒 Waktu: {waktu_sekarang}\n📍 Kebun Kakao Lampung Timur (Zona {zona_teks})\n⚡ Sirine & Lampu Sorot AKTIF!"
         status_tg = kirim_telegram(token, chat_id, pesan, gambar_hasil)
         return gambar_hasil, "BAHAYA", f"MANUSIA tanpa izin terdeteksi! Perintah THIEF dikirim ke Wokwi. ({status_tg})"
 
@@ -221,7 +221,7 @@ def deteksi_kematangan_kakao(gambar_bgr, malam_rawan, jumlah_anomali):
 # 5. KOMPONEN REAL-TIME AUTO-REFRESH TIAP 2 DETIK (@st.fragment)
 #    Hanya panel sensor & log yang refresh otomatis; Webcam TIDAK reset!
 # ---------------------------------------------------------------------
-@st.fragment(run_every=2)
+@st.fragment(run_every=1)
 def panel_sensor_realtime():
     broker_ok, wokwi_ok = cek_status_koneksi(mqtt_client, state)
     waktu_str = datetime.now().strftime("%d/%m/%Y  %H:%M:%S")
@@ -261,12 +261,12 @@ def panel_log_realtime():
 # =====================================================================
 # 6. TAMPILAN UTAMA DASHBOARD STREAMLIT
 # =====================================================================
-st.set_page_config(page_title="CacaoGuard AI", page_icon="🍫", layout="wide")
+st.set_page_config(page_title="Jagak (Jaga Kakao)", page_icon="🍫", layout="wide")
 mqtt_client, state = mulai_mqtt()
 
 with st.sidebar:
-    st.title("🍫 CacaoGuard AI")
-    st.caption("Lampung Timur | IDTC 2.0\nAuto-Refresh Real-Time: 2 Detik")
+    st.title("🍫 Jagak (Jaga Kakao)")
+    st.caption("Edge AIoT Kakao Lampung Timur | IDTC 2.0")
 
     st.divider()
     st.subheader("Telegram Bot")
@@ -276,14 +276,14 @@ with st.sidebar:
     st.divider()
     st.subheader("Tes Kirim ke Wokwi")
     c1, c2, c3 = st.columns(3)
-    if c1.button("THIEF"):  kirim_perintah_wokwi(mqtt_client, state, "THIEF")
-    if c2.button("ANIMAL"): kirim_perintah_wokwi(mqtt_client, state, "ANIMAL")
-    if c3.button("CLEAR"):  kirim_perintah_wokwi(mqtt_client, state, "CLEAR")
+    if c1.button("MALING"):  kirim_perintah_wokwi(mqtt_client, state, "MALING")
+    if c2.button("HEWAN"): kirim_perintah_wokwi(mqtt_client, state, "HEWAN")
+    if c3.button("AMANKAN"):  kirim_perintah_wokwi(mqtt_client, state, "AMANKAN")
 
     st.divider()
     st.link_button("🔌 Buka Simulasi Wokwi", LINK_WOKWI, use_container_width=True)
 
-st.title("Dashboard CacaoGuard AI — Blok B Lampung Timur")
+st.title("Dashboard Jagak (Jaga Kakao) — Lampung Timur")
 panel_sensor_realtime()
 st.divider()
 
