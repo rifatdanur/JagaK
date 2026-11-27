@@ -304,17 +304,17 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
 
   Serial.printf("[%s] [CMD DARI AI] %s\n", getTimeWIB().c_str(), msg.c_str());
 
-  if (msg == "THIEF" || msg == "PERSON") {
+  if (msg == "THIEF" || msg == "PERSON" || msg == "MALING") {
     if (!bleOwnerPresent) {
       currentMode = MODE_THIEF_ALARM;
       alarmStartMs = millis();
       digitalWrite(PIN_LED_RED, HIGH);
     }
-  } else if (msg == "ANIMAL") {
+  } else if (msg == "ANIMAL" || msg == "HEWAN") {
     currentMode = MODE_ANIMAL_DETERRENT;
     alarmStartMs = millis();
     digitalWrite(PIN_LED_RED, LOW);
-  } else if (msg == "CLEAR" || msg == "STOP") {
+  } else if (msg == "CLEAR" || msg == "STOP" || msg == "AMANKAN") {
     currentMode = MODE_STANDBY;
     digitalWrite(PIN_LED_RED, LOW);
     noTone(PIN_BUZZER);
@@ -476,7 +476,7 @@ void loop() {
   updateActuators();
 
   // Baca DHT22 setiap 2 detik
-  if (now - lastDhtMs >= 2000) {
+  if (now - lastDhtMs >= 1000) {
     lastDhtMs = now;
     readDHT22();
   }
@@ -488,7 +488,7 @@ void loop() {
   }
 
   // Kirim telemetri setiap 2 detik agar Dashboard real-time makin responsif
-  if (now - lastTelemetryMs >= 2000) {
+  if (now - lastTelemetryMs >= 1000) {
     lastTelemetryMs = now;
     publishTelemetry();
   }
