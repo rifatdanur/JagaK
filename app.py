@@ -6,7 +6,9 @@
 import io
 import json
 import time
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+WIB = timezone(timedelta(hours=7))
 
 import cv2
 import numpy as np
@@ -69,7 +71,7 @@ def mulai_mqtt():
             return
 
         state["last_wokwi_ts"] = time.time()
-        waktu_laptop = datetime.now().strftime("%H:%M:%S")
+        waktu_laptop = datetime.now(WIB).strftime("%H:%M:%S")
 
         if msg.topic == TOPIC_TELEMETRY:
             for k in ["ripeness_pct", "risk_score", "zone", "temp_c", "hum_pct", "ble_owner", "anomaly_count", "status"]:
@@ -108,7 +110,7 @@ def cek_status_koneksi(client, state):
 
 def kirim_perintah_wokwi(client, state, perintah):
     broker_ok, _ = cek_status_koneksi(client, state)
-    waktu_laptop = datetime.now().strftime("%H:%M:%S")
+    waktu_laptop = datetime.now(WIB).strftime("%H:%M:%S")
     if broker_ok:
         client.publish(TOPIC_CMD, perintah)
         state["log"].insert(
@@ -168,7 +170,7 @@ def deteksi_keamanan(gambar_bgr, model, ble_owner, mqtt_client, state, token, ch
         elif id_kelas in KELAS_HEWAN:
             ada_hewan = True
 
-    waktu_sekarang = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    waktu_sekarang = datetime.now(WIB).strftime("%d/%m/%Y %H:%M:%S")
     zona_teks = state["zone"] if state["zone"] else "null"
 
     if ada_manusia and ble_owner:
@@ -224,7 +226,7 @@ def deteksi_kematangan_kakao(gambar_bgr, malam_rawan, jumlah_anomali):
 @st.fragment(run_every=1)
 def panel_sensor_realtime():
     broker_ok, wokwi_ok = cek_status_koneksi(mqtt_client, state)
-    waktu_str = datetime.now().strftime("%d/%m/%Y  %H:%M:%S")
+    waktu_str = datetime.now(WIB).strftime("%d/%m/%Y  %H:%M:%S")
 
     s1, s2, s3 = st.columns([1.2, 1.4, 1.4])
     s1.markdown(f"**Broker MQTT:** {'🟢 Terhubung' if broker_ok else '🔴 Terputus'}")
@@ -246,7 +248,7 @@ def panel_sensor_realtime():
     k5.metric("Kelembapan", hum_val)
 
 
-@st.fragment(run_every=2)
+@st.fragment(run_every=1)
 def panel_log_realtime():
     if state["log"]:
         st.dataframe(state["log"], use_container_width=True, hide_index=True)
@@ -276,9 +278,9 @@ with st.sidebar:
     st.divider()
     st.subheader("Tes Kirim ke Wokwi")
     c1, c2, c3 = st.columns(3)
-    if c1.button("MALING"):  kirim_perintah_wokwi(mqtt_client, state, "MALING")
-    if c2.button("HEWAN"): kirim_perintah_wokwi(mqtt_client, state, "HEWAN")
-    if c3.button("AMANKAN"):  kirim_perintah_wokwi(mqtt_client, state, "AMANKAN")
+    if c1.button("MALING"):  kirim_perintah_wokwi(mqtt_client, state, "THIEF")
+    if c2.button("HEWAN"):   kirim_perintah_wokwi(mqtt_client, state, "ANIMAL")
+    if c3.button("AMANKAN"): kirim_perintah_wokwi(mqtt_client, state, "CLEAR")
 
     st.divider()
     st.link_button("🔌 Buka Simulasi Wokwi", LINK_WOKWI, use_container_width=True)
@@ -322,7 +324,7 @@ with tab1:
 
 with tab2:
     st.subheader("Deteksi Kematangan Buah Kakao (Hijau vs Kuning)")
-    now_laptop = datetime.now()
+    now_laptop = datetime.now(WIB)
     is_malam_laptop = (now_laptop.hour >= 18 or now_laptop.hour <= 5)
     malam_rawan = st.checkbox(
         f"Mode Malam Rawan (Sinkron Jam Laptop: {now_laptop.strftime('%H:%M')} — {'Malam' if is_malam_laptop else 'Siang'})",
